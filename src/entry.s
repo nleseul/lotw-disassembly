@@ -115,10 +115,10 @@
 .include "metatiles.s"
 
 .segment "PRG9"
-.include "BANK_09.s"
+.include "music_bank1.s"
 
 .segment "PRG10"
-.include "audio.s"
+.include "music_bank2.s"
 .include "initram.s"
 TitlescreenNametables:
 .incbin "titlescreen.nam"
@@ -130,6 +130,7 @@ TitlescreenMMC3Banks:
 .include "titlescreen.s"
 
 .segment "GAME"
+.include "audio.s" ; No direct content; just sets up some macros for game.s to import
 .include "game.s"
 
 .segment "CHR"

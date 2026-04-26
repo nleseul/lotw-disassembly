@@ -595,3 +595,76 @@ BlockPtrLo        = $0C
 BlockPtrHi        = $0D
 BlockPtr2Lo  = $10
 BlockPtr2Hi  = $11
+
+Note_C      = $00
+Note_CSharp = $01
+Note_D      = $02
+Note_DSharp = $03
+Note_E      = $04
+; There's no such thing as an E sharp, but the encoding reserves a value for it at $05
+Note_F      = $06
+Note_FSharp = $07
+Note_G      = $08
+Note_GSharp = $09
+Note_A      = $0A
+Note_ASharp = $0B
+Note_B      = $0C
+
+MusicChannelData_NoData = $0000
+MusicChannelData_NoLoop = $0000
+
+; Channel data that simply loops from the beginning upon completion
+.macro mus_channel track,channel,data0,data1,data6,data7
+    .byte data0,data1
+    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
+    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
+    .byte data6,data7
+.endmacro
+
+; Channel data that loops from a later point in the data after an intro
+.macro mus_channel_intro track,channel,data0,data1,data6,data7
+    .byte data0,data1
+    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
+    .addr .ident(.sprintf("Music_Track%d_Channel%d_Loop", track, channel))
+    .byte data6,data7
+.endmacro
+
+; Channel data ends upon completion without looping
+.macro mus_channel_noloop track,channel,data0,data1,data6,data7
+    .byte data0,data1
+    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
+    .addr MusicChannelData_NoLoop
+    .byte data6,data7
+.endmacro
+
+; Channel data that is empty
+.macro mus_channel_empty track,channel,data0,data1,data6,data7
+    .byte data0,data1
+    .addr MusicChannelData_NoData
+    .addr MusicChannelData_NoLoop
+    .byte data6,data7
+.endmacro
+
+.macro mus_end
+    .byte $00
+.endmacro
+
+.macro mus_instrument inst
+    .byte $FF,$00,inst
+.endmacro
+
+.macro mus_volume vol
+    .byte $FF,$01,vol
+.endmacro
+
+.macro mus_rest duration
+    .byte duration|$80
+.endmacro
+
+.macro mus_noise duration
+    .byte duration
+.endmacro
+
+.macro mus_note note,octave,duration
+    .byte duration,(octave<<4)|note
+.endmacro
