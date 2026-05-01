@@ -601,7 +601,7 @@ Note_CSharp = $01
 Note_D      = $02
 Note_DSharp = $03
 Note_E      = $04
-; There's no such thing as an E sharp, but the encoding reserves a value for it at $05
+Note_Nothin = $05 ; There's no such thing as an E sharp, but the encoding reserves a value for it at $05
 Note_F      = $06
 Note_FSharp = $07
 Note_G      = $08
