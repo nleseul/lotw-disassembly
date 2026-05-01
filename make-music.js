@@ -141,13 +141,19 @@ for (let trackIndex = 0; trackIndex < TrackNames.length; ++trackIndex)
 
     const trackAddressRam = readWord(file, bankStart + bankTrackIndex*2);
 
+    let headerOutputLines = [];
     let outputLines = [];
 
-    console.log(`; Track ${trackIndex} - ${TrackNames[trackIndex]}`);
+    headerOutputLines.push(`; Track ${trackIndex} - ${TrackNames[trackIndex]}`);
+    headerOutputLines.push(`Music_Track${trackIndex}_Header:`)
+    headerOutputLines.push("");
+
     outputLines.push(`; Track ${trackIndex} - ${TrackNames[trackIndex]}`);
     outputLines.push("");
 
     const trackAddressRom = trackAddressRam - BankRamOffset + bankStart;
+
+    console.log(`Track ${trackIndex} at ${h(trackAddressRom)}`)
 
     for (let channelIndex = 0; channelIndex < Channel_Count; ++channelIndex)
     {
@@ -157,19 +163,35 @@ for (let trackIndex = 0; trackIndex < TrackNames.length; ++trackIndex)
         const channelStartAddressRam = readWord(channelHeaderData, 2);
         const channelLoopAddressRam = readWord(channelHeaderData, 4);
 
-        const trackDefinitionMacro = (channelStartAddressRam == 0x0000 ? "mus_channel_empty " :
-            channelLoopAddressRam == 0x0000 ? "mus_channel_noloop" :
-            channelLoopAddressRam == channelStartAddressRam ? "mus_channel       " :
-            "mus_channel_intro ");
-
-        const trackDefinition = `${trackDefinitionMacro} ${trackIndex.toString().padStart(2)}, ${channelIndex}, ` +
-            `${h(channelHeaderData[0])}, ${h(channelHeaderData[1])}, ` +
-            `${h(channelHeaderData[6])}, ${h(channelHeaderData[7])}`;
+        headerOutputLines.push(`; Channel ${channelIndex}`)
+        headerOutputLines.push(`.byte ${h(channelHeaderData[0])},${h(channelHeaderData[1])}`)
+        if (channelStartAddressRam == 0x0000)
+        {
+            headerOutputLines.push(".addr Music_NoChannelData");
+        }
+        else
+        {
+            headerOutputLines.push(`.addr Music_Track${trackIndex}_Channel${channelIndex}_Start`);
+        }
+        if (channelLoopAddressRam == 0x0000)
+        {
+            headerOutputLines.push(".addr Music_NoLoop");
+        }
+        else if (channelLoopAddressRam == channelStartAddressRam)
+        {
+            headerOutputLines.push(`.addr Music_Track${trackIndex}_Channel${channelIndex}_Start`);
+        }
+        else
+        {
+            headerOutputLines.push(`.addr Music_Track${trackIndex}_Channel${channelIndex}_Loop`);
+        }
+        headerOutputLines.push(`.byte ${h(channelHeaderData[6])},${h(channelHeaderData[7])}`)
+        headerOutputLines.push("");
 
         if (channelStartAddressRam == 0x0000)
         {
             // Empty track; skip reading the data
-            console.log(trackDefinition);
+            console.log(`  Channel ${channelIndex} empty`)
             continue;
         }
 
@@ -184,12 +206,13 @@ for (let trackIndex = 0; trackIndex < TrackNames.length; ++trackIndex)
         outputLines = outputLines.concat(channelOutputLines);
         outputLines.push("");
 
-        console.log(`${trackDefinition}      ;  ${h(channelStartAddressRom)}~${h(endAddr)}`);
-
-        await fs.writeFile(`src/music/track${trackIndex}.s`, outputLines.join('\n'));
+        console.log(`  Channel ${channelIndex} - ${h(channelStartAddressRom)}~${h(endAddr)}`)
     }
 
-    console.log("");
+    console.log();
+
+    await fs.writeFile(`src/music/track${trackIndex}_header.s`, headerOutputLines.join('\n'));
+    await fs.writeFile(`src/music/track${trackIndex}.s`, outputLines.join('\n'));
 }
 
 let readSfxRamAddresses = {};
@@ -205,10 +228,11 @@ for (let sfxIndex = 1; sfxIndex < SfxCount; ++sfxIndex)
     }
 
     const sfxAddressRom = sfxAddressRam - BankRamOffset + Bank1Start;
-    console.log(`SFX ${sfxIndex} - ${h(sfxAddressRam)}, ${h(sfxAddressRom)}`);
 
     const {outputLines, endAddr} = processChannelEvents(file,
         sfxAddressRom, `Sfx${sfxIndex}_Start`, undefined, undefined, false);
+
+    console.log(`SFX ${sfxIndex} - ${h(sfxAddressRom)}~${h(endAddr)}`);
 
     readSfxRamAddresses[sfxAddressRam] = sfxIndex;
 

@@ -1,17 +1,17 @@
 Audio_AreaMusic:
-.addr Music_Track0
-.addr Music_Track1
-.addr Music_Track2
-.addr Music_Track3
-.addr Music_Track4
-.addr Music_Track5
-.addr Music_Track6
-.addr Music_Track7
-.addr Music_Track8
-.addr Music_Track9
+.addr Music_Track0_Header
+.addr Music_Track1_Header
+.addr Music_Track2_Header
+.addr Music_Track3_Header
+.addr Music_Track4_Header
+.addr Music_Track5_Header
+.addr Music_Track6_Header
+.addr Music_Track7_Header
+.addr Music_Track8_Header
+.addr Music_Track9_Header
 
 Audio_Sounds:
-.addr Music_Track7
+.addr Music_Track7_Header
 .addr Sfx1_Start
 .addr Sfx2_Start
 .addr Sfx3_Start
@@ -51,65 +51,16 @@ Audio_Sounds:
 .addr Sfx37_Start
 .addr Sfx25_Start
 
-Music_Track0:
-mus_channel         0, 0, $04, $80, $BA, $00      ;  $141A2~$14283
-mus_channel         0, 1, $04, $80, $BA, $00      ;  $14283~$14365
-mus_channel         0, 2, $04, $80, $00, $10      ;  $14365~$145D6
-mus_channel         0, 3, $04, $80, $80, $03      ;  $145D6~$14699
-
-Music_Track3:
-mus_channel_intro   3, 0, $04, $80, $FA, $00      ;  $14699~$147F1
-mus_channel_intro   3, 1, $04, $80, $BA, $00      ;  $147F1~$149A8
-mus_channel_intro   3, 2, $04, $80, $13, $13      ;  $149A8~$14C03
-mus_channel_intro   3, 3, $04, $80, $80, $03      ;  $14C03~$14E81
-
-Music_Track1:
-mus_channel         1, 0, $04, $80, $BA, $00      ;  $151F0~$15294
-mus_channel         1, 1, $04, $80, $BA, $00      ;  $15294~$15345
-mus_channel         1, 2, $04, $80, $FF, $FF      ;  $15345~$15587
-mus_channel         1, 3, $04, $80, $80, $03      ;  $15587~$15786
-
-Music_Track6:
-mus_channel         6, 0, $04, $80, $BA, $00      ;  $14E81~$14F0F
-mus_channel         6, 1, $04, $80, $BA, $00      ;  $14F0F~$14FA0
-mus_channel         6, 2, $04, $80, $13, $13      ;  $14FA0~$15091
-mus_channel         6, 3, $04, $80, $80, $03      ;  $15091~$151F0
-
-Music_Track4:
-mus_channel         4, 0, $04, $80, $BA, $00      ;  $15786~$15905
-mus_channel         4, 1, $04, $80, $BA, $00      ;  $15905~$15A1F
-mus_channel         4, 2, $04, $80, $FF, $FF      ;  $15A1F~$15B2C
-mus_channel         4, 3, $04, $80, $80, $03      ;  $15B2C~$15CCC
-
-Music_Track2:
-mus_channel         2, 0, $04, $80, $BA, $00      ;  $15CCC~$15D59
-mus_channel         2, 1, $04, $80, $BA, $00      ;  $15D59~$15F40
-mus_channel         2, 2, $04, $80, $13, $13      ;  $15F40~$16094
-mus_channel         2, 3, $04, $80, $80, $03      ;  $16094~$1627C
-
-Music_Track7:
-mus_channel_intro   7, 0, $04, $80, $BA, $00      ;  $1627C~$1637B
-mus_channel_intro   7, 1, $04, $80, $BA, $00      ;  $1637B~$164E1
-mus_channel_intro   7, 2, $04, $80, $13, $FF      ;  $164E1~$16723
-mus_channel_intro   7, 3, $04, $80, $80, $03      ;  $16723~$16A1C
-
-Music_Track5:
-mus_channel_intro   5, 0, $04, $80, $BA, $00      ;  $16A1C~$16AEB
-mus_channel_intro   5, 1, $04, $80, $BA, $00      ;  $16AEB~$16BB2
-mus_channel_intro   5, 2, $04, $80, $FF, $FF      ;  $16BB2~$16D3D
-mus_channel_intro   5, 3, $04, $80, $80, $03      ;  $16D3D~$16F67
-
-Music_Track8:
-mus_channel         8, 0, $04, $80, $BA, $00      ;  $16F67~$16FE7
-mus_channel         8, 1, $04, $80, $BA, $00      ;  $16FE7~$17063
-mus_channel         8, 2, $04, $80, $FF, $FF      ;  $17063~$170B0
-mus_channel         8, 3, $04, $80, $80, $03      ;  $170B0~$170F5
-
-Music_Track9:
-mus_channel_intro   9, 0, $04, $80, $BA, $00      ;  $170F5~$1714E
-mus_channel_intro   9, 1, $04, $80, $BA, $00      ;  $1714E~$17229
-mus_channel_intro   9, 2, $04, $80, $13, $13      ;  $17229~$172D8
-mus_channel_intro   9, 3, $04, $80, $80, $03      ;  $172D8~$173AB
+.include "music/track0_header.s"
+.include "music/track3_header.s"
+.include "music/track1_header.s"
+.include "music/track6_header.s"
+.include "music/track4_header.s"
+.include "music/track2_header.s"
+.include "music/track7_header.s"
+.include "music/track5_header.s"
+.include "music/track8_header.s"
+.include "music/track9_header.s"
 
 .include "music/track0.s"
 .include "music/track3.s"

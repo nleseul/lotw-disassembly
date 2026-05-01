@@ -610,40 +610,8 @@ Note_A      = $0A
 Note_ASharp = $0B
 Note_B      = $0C
 
-MusicChannelData_NoData = $0000
-MusicChannelData_NoLoop = $0000
-
-; Channel data that simply loops from the beginning upon completion
-.macro mus_channel track,channel,data0,data1,data6,data7
-    .byte data0,data1
-    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
-    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
-    .byte data6,data7
-.endmacro
-
-; Channel data that loops from a later point in the data after an intro
-.macro mus_channel_intro track,channel,data0,data1,data6,data7
-    .byte data0,data1
-    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
-    .addr .ident(.sprintf("Music_Track%d_Channel%d_Loop", track, channel))
-    .byte data6,data7
-.endmacro
-
-; Channel data ends upon completion without looping
-.macro mus_channel_noloop track,channel,data0,data1,data6,data7
-    .byte data0,data1
-    .addr .ident(.sprintf("Music_Track%d_Channel%d_Start", track, channel))
-    .addr MusicChannelData_NoLoop
-    .byte data6,data7
-.endmacro
-
-; Channel data that is empty
-.macro mus_channel_empty track,channel,data0,data1,data6,data7
-    .byte data0,data1
-    .addr MusicChannelData_NoData
-    .addr MusicChannelData_NoLoop
-    .byte data6,data7
-.endmacro
+Music_NoChannelData = $0000
+Music_NoLoop = $0000
 
 .macro mus_end
     .byte $00
