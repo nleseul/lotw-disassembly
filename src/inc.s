@@ -595,3 +595,44 @@ BlockPtrLo        = $0C
 BlockPtrHi        = $0D
 BlockPtr2Lo  = $10
 BlockPtr2Hi  = $11
+
+Note_C      = $00
+Note_CSharp = $01
+Note_D      = $02
+Note_DSharp = $03
+Note_E      = $04
+Note_Nothin = $05 ; There's no such thing as an E sharp, but the encoding reserves a value for it at $05
+Note_F      = $06
+Note_FSharp = $07
+Note_G      = $08
+Note_GSharp = $09
+Note_A      = $0A
+Note_ASharp = $0B
+Note_B      = $0C
+
+Music_NoChannelData = $0000
+Music_NoLoop = $0000
+
+.macro mus_end
+    .byte $00
+.endmacro
+
+.macro mus_instrument inst
+    .byte $FF,$00,inst
+.endmacro
+
+.macro mus_volume vol
+    .byte $FF,$01,vol
+.endmacro
+
+.macro mus_rest duration
+    .byte duration|$80
+.endmacro
+
+.macro mus_noise duration
+    .byte duration
+.endmacro
+
+.macro mus_note note,octave,duration
+    .byte duration,(octave<<4)|note
+.endmacro
